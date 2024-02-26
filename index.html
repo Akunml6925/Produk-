@@ -24,31 +24,27 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>beras</td>
-      <td>20k</td>
-      <td>100</td>
-    </tr>
   </tbody>
 </table>
 
 <script type="module">
-  import { ambilDaftarproduk } from '.main.js';
+  import { ambilDaftarproduk } from './main.js';
   
   $(document).ready(async function(){
     let elemenDaftar = $("#daftar-produk > tbody");
     let daftarproduk = await ambilDaftarproduk();
+    let nomor = 1;
     
     daftarproduk.forEach((data) => {
       elemenDaftar.append(
          '<tr>' +
-         '<td>' + '</td>' +
+         '<td>' + nomor + '</td>' +
          '<td>' + data.nama + '</td>' +
          '<td>' + data.harga + '</td>' +
          '<td>' + data.stok + '</td>' +
          '</tr>'
         );
+        nomor = nomor + 1;
     });
   });
 </script>
