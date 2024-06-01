@@ -28,10 +28,11 @@
 </table>
 
 <img src="loader.gif" style="width: 1.8em; display: block" id="loader">
-<a href="form-produk.html">Tambah produk</a>
+
+<a href="from-produk.html">tambah produk</a>
 
 <script type="module">
-  import { ambilDaftarproduk, formatAngka } from './main.js';
+  import { ambilDaftarproduk, formatAngka,hapusproduk } from './main.js';
   
   $(document).ready(async function(){
     let elemenDaftar = $("#daftar-produk > tbody");
@@ -43,8 +44,13 @@
          '<tr>' +
          '<td>' + nomor + '</td>' +
          '<td>' + data.nama + '</td>' +
-         '<td>' + formatAngka(data.harga) + '</td>' +
-         '<td>' + data.stok + '</td>' +
+         '<td>' + data.harga + '</td>' +
+         '<td>' + data.stok + '</td>' + '<class="stack-up">' +
+         '<a href="#" class="me-2 link-ubah" data="' +
+         data.id +
+         '">ubah</a>' +
+         ' </button class="btn btn-danger tombol-hapus" data"' +
+         '">Hapus</button>' + '</td>' +
          '</tr>'
         );
         nomor = nomor + 1;
@@ -52,9 +58,18 @@
     
     $('#loader').hide();
     
+    $('.tombol-hapus').click(async function() {
+      $(this).attr('disabled', 'disabled');
+      $('#' + $(this).attr('data')).show();
+      await hapusproduk($(this).attr('data'));
+      location.reload();
+    });
+    $('.link-ubah').click(async function() {window.location.replace('ubah-produk.html ?docId=' + $(this).attr('data'));
+      
+    })
+    
   });
-</script>
-
+  </script >
 </body>
 
 </html>

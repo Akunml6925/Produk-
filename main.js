@@ -18,7 +18,7 @@ const firebaseConfig = {
   projectId: "pasarbarokah-56d6c",
   storageBucket: "pasarbarokah-56d6c.appspot.com",
   messagingSenderId: "316348641371",
-  appId: "1:316348641371:web:5ad38a561e7d73744acf7e",
+  appId: "1:316348641371:web:5ad38a561e7d73744acf7e"
 };
 
 // Inisialisasi Firebase
@@ -27,11 +27,11 @@ const db = getFirestore(app);
 
 export async function ambilDaftarproduk(){
   const refDokumen = collection(db, "produk");
-  const kuery = query(refDokumen, orderBy("nama"));
-  const cuplikankuery = await getDocs(kuery);
+  const kueri = query(refDokumen, orderBy("nama"));
+  const cuplikankueri = await getDocs(kueri);
   
   let hasil = [];
-  cuplikankuery.forEach((dok) => {
+  cuplikankueri.forEach((dok) => {
     hasil.push({
       id: dok.id,
       nama: dok.data().nama,
@@ -58,4 +58,23 @@ export async function tambahProduk(nama,harga,stok) {
   } catch (e) {
     console.log('Gagal menambah produk' + e);
   }
+}
+
+export async function hapusproduk(docId){
+  await deleteDoc(doc(db, "produk", docId));
+}
+
+export async function hapusproduk(docId,nama,harga stok) {
+  await updateDoc(doc(db, "produk",docId), {
+    nama: nama,
+    harga: harga,
+    stok: stok
+  });
+}
+
+export async function ambilDaftarproduk(docId) {
+  const dokRef = await doc(db,"produk",docId);
+  const docSnap = await getDoc(docRef);
+  
+  return await docSnap.data();
 }
