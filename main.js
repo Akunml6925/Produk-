@@ -12,69 +12,73 @@ import {
   updateDoc
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyA-wvBGzlYI9NHjVZBq7wbUHtEWrN3AFI8",
-  authDomain: "pasarbarokah-56d6c.firebaseapp.com",
-  projectId: "pasarbarokah-56d6c",
-  storageBucket: "pasarbarokah-56d6c.appspot.com",
-  messagingSenderId: "316348641371",
-  appId: "1:316348641371:web:5ad38a561e7d73744acf7e"
+  apiKey: "AIzaSyB8g6kCR8laDnH1YCF9cYVy10lF1y7s2i0",
+  authDomain: "bakwan-jagung.firebaseapp.com",
+  projectId: "bakwan-jagung",
+  storageBucket: "bakwan-jagung.appspot.com",
+  messagingSenderId: "710653450064",
+  appId: "1:710653450064:web:5cbf9ff4240922b03ffe55",
+  measurementId: "G-VBHD7G08PJ"
 };
 
 // Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export async function ambilDaftarproduk(){
-  const refDokumen = collection(db, "produk");
+export async function ambilDaftarPembeli() {
+  const refDokumen = collection(db, "pembeli");
   const kueri = query(refDokumen, orderBy("nama"));
-  const cuplikankueri = await getDocs(kueri);
-  
+  const cuplikanKueri = await getDocs(kueri);
+
   let hasil = [];
-  cuplikankueri.forEach((dok) => {
+  cuplikanKueri.forEach((dok) => {
     hasil.push({
       id: dok.id,
       nama: dok.data().nama,
-      harga: dok.data().harga,
-      stok: dok.data().stok,
+      alamat: dok.data().alamat,
+      noTlpn: dok.data().noTlpn,
     });
   });
-  
+
+
+
   return hasil;
 }
 
 export function formatAngka(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
-export async function tambahProduk(nama,harga,stok) {
+export async function tambahPembeli(nama, alamat, noTlpn) {
   try {
-    const dokRef = await addDoc(collection(db,'produk'), {
+    const dokRef = await addDoc(collection(db, 'pembeli'), {
       nama: nama,
-      harga: harga,
-      stok: stok
+      alamat: alamat,
+      noTlpn: noTlpn
     });
-    console.log('Berhasil menambah produk' + dokRef.id);
+    console.log('berhasil menembah produk ' + dokRef.id);
   } catch (e) {
-    console.log('Gagal menambah produk' + e);
+    console.log('gagal menambah produk ' + e);
   }
 }
 
-export async function hapusproduk(docId){
-  await deleteDoc(doc(db, "produk", docId));
+export async function hapusPembeli(docId) {
+  await deleteDoc(doc(db, "pembeli", docId));
 }
 
-export async function hapusproduk(docId,nama,harga stok) {
-  await updateDoc(doc(db, "produk",docId), {
+export async function ubahPembeli(docId, nama, alamat, noTlpn) {
+  await updateDoc(doc(db, "pembeli", docId), {
     nama: nama,
-    harga: harga,
-    stok: stok
+    alamat: alamat,
+    noTlpn: noTlpn
   });
 }
 
-export async function ambilDaftarproduk(docId) {
-  const dokRef = await doc(db,"produk",docId);
+export async function ambilPembeli(docId) {
+  const docRef = await doc(db, "pembeli", docId);
   const docSnap = await getDoc(docRef);
-  
+
   return await docSnap.data();
 }
